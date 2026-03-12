@@ -582,7 +582,7 @@ function openHotel(id){
     }, 300);
   };
   
-  frame.src = url;
+  frame.src = url + '?sso=' + currentUser.username;
   view.classList.add('visible');
   document.body.style.overflow = 'hidden';
 }
