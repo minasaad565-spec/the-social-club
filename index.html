@@ -415,7 +415,7 @@ body::before{
   <main class="dashboard">
     <div class="welcome-banner">
       <div class="welcome-date" id="welcome-date">—</div>
-      <div class="welcome-greeting">Bonjour, <em id="welcome-name">—</em></div>
+      <div class="welcome-greeting"><span id="welcome-greeting">Bonjour</span>,<br><em id="welcome-name">—</em></div>
       <div class="welcome-role" id="welcome-role">Direction</div>
     </div>
 
@@ -518,7 +518,7 @@ body::before{
 
 <script>
 const USERS=[
-  {username:'cc',password:'cc',name:'M. Chalvidal',role:'Président Directeur Général'},
+  {username:'cc',password:'cc',name:'M. Chalvidal',role:'Direction Générale'},
   {username:'ac',password:'ac',name:'Mme Chalvidal',role:'Direction Générale'},
 ];
 const HOTELS={'maison-soyeuse':'https://maison-soyeuse-431w.vercel.app'};
@@ -539,7 +539,7 @@ function doLogin(){
 function showApp(){
   document.getElementById('app').classList.add('visible');
   document.getElementById('welcome-date').textContent=getDateStr();
-  document.getElementById('welcome-name').textContent=currentUser.name;
+  const h=new Date().getHours();document.getElementById('welcome-greeting').textContent=h>=18||h<5?'Bonsoir':'Bonjour';document.getElementById('welcome-name').textContent=currentUser.name;
   document.getElementById('welcome-role').textContent=currentUser.role;
   document.getElementById('header-user').textContent=currentUser.name;
 }
