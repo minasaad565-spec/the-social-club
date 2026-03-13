@@ -325,10 +325,16 @@ body::before{
 }
 .loading-overlay.fade{opacity:0;pointer-events:none;}
 .loading-spinner{
-  width:32px;height:32px;
-  border:1.5px solid var(--border);
-  border-top-color:var(--gold);
-  border-radius:50%;animation:spin 0.9s linear infinite;
+  width:36px;height:36px;
+  animation:spin 1.4s linear infinite;
+  display:flex;align-items:center;justify-content:center;
+}
+.loading-spinner::before{
+  content:"✛";
+  font-size:28px;
+  color:var(--gold);
+  display:block;
+  line-height:1;
 }
 
 /* ── IFRAME OVERLAY ── */
@@ -598,7 +604,7 @@ function closeHotel(){
 
 document.getElementById('login-pass').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
 document.getElementById('login-user').addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('login-pass').focus();});
-window.addEventListener('load',()=>{setTimeout(()=>{const l=document.getElementById('loader');l.classList.add('fade');setTimeout(()=>l.style.display='none',500);},400);});
+window.addEventListener('load',()=>{setTimeout(()=>{const l=document.getElementById('loader');l.classList.add('fade');setTimeout(()=>l.style.display='none',500);},900);});
 </script>
 
 <!-- HOTEL IFRAME VIEW -->
