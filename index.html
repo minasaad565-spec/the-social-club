@@ -325,16 +325,8 @@ body::before{
 }
 .loading-overlay.fade{opacity:0;pointer-events:none;}
 .loading-spinner{
-  width:36px;height:36px;
+  width:48px;height:48px;
   animation:spin 1.4s linear infinite;
-  display:flex;align-items:center;justify-content:center;
-}
-.loading-spinner::before{
-  content:"✛";
-  font-size:28px;
-  color:var(--gold);
-  display:block;
-  line-height:1;
 }
 
 /* ── IFRAME OVERLAY ── */
@@ -379,7 +371,7 @@ body::before{
 </head>
 <body>
 
-<div class="loading-overlay" id="loader"><div class="loading-spinner"></div></div>
+<div class="loading-overlay" id="loader"><div class="loading-spinner"><svg xmlns="http://www.w3.org/2000/svg" viewBox="211 0 35 32" width="48" height="48"><path fill="#9d8552" d="m225.739 14.373-12.149 2 12.149 2Z"/><path fill="#9d8552" d="m234.745 18.377 12.149-2-12.149-2Z"/><path fill="#9d8552" d="M232.245 20.603h-4l2 12.149Z"/><path fill="#9d8552" d="m230.242 0-2 12.149h4Z"/></svg></div></div>
 
 <!-- LOGIN -->
 <div id="login-page">
