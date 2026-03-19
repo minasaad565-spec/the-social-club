@@ -322,11 +322,19 @@ body::before{
   position:fixed;inset:0;background:#FAF7F2;
   display:flex;align-items:center;justify-content:center;
   z-index:200;transition:opacity 0.5s ease;
+  overflow:hidden;
 }
 .loading-overlay.fade{opacity:0;pointer-events:none;}
 .loading-spinner{
-  width:48px;height:48px;
+  width:56px;height:56px;
   animation:spin 1.4s linear infinite;
+  position:relative;z-index:2;flex-shrink:0;
+}
+.loading-crosses{
+  position:absolute;inset:0;pointer-events:none;
+}
+.loading-crosses svg{
+  position:absolute;
 }
 
 /* ── IFRAME OVERLAY ── */
@@ -371,7 +379,46 @@ body::before{
 </head>
 <body>
 
-<div class="loading-overlay" id="loader"><div class="loading-spinner"><svg xmlns="http://www.w3.org/2000/svg" viewBox="211 0 35 32" width="48" height="48"><path fill="#9d8552" d="m225.739 14.373-12.149 2 12.149 2Z"/><path fill="#9d8552" d="m234.745 18.377 12.149-2-12.149-2Z"/><path fill="#9d8552" d="M232.245 20.603h-4l2 12.149Z"/><path fill="#9d8552" d="m230.242 0-2 12.149h4Z"/></svg></div></div>
+<div class="loading-overlay" id="loader">
+  <div class="loading-crosses" id="loader-crosses"></div>
+  <div class="loading-spinner"><svg xmlns="http://www.w3.org/2000/svg" viewBox="211 0 35 32" width="56" height="56"><path fill="#9d8552" d="m225.739 14.373-12.149 2 12.149 2Z"/><path fill="#9d8552" d="m234.745 18.377 12.149-2-12.149-2Z"/><path fill="#9d8552" d="M232.245 20.603h-4l2 12.149Z"/><path fill="#9d8552" d="m230.242 0-2 12.149h4Z"/></svg></div>
+</div>
+<script>
+(function(){
+  var crosses=[
+    {x:5,y:3,s:26,o:0.55},{x:14,y:8,s:16,o:0.45},{x:24,y:2,s:32,o:0.60},{x:34,y:9,s:14,o:0.42},
+    {x:44,y:4,s:22,o:0.50},{x:55,y:8,s:18,o:0.48},{x:65,y:3,s:28,o:0.55},{x:75,y:9,s:14,o:0.42},
+    {x:85,y:4,s:24,o:0.52},{x:95,y:8,s:16,o:0.45},
+    {x:8,y:16,s:18,o:0.48},{x:18,y:20,s:28,o:0.58},{x:28,y:15,s:12,o:0.40},
+    {x:38,y:20,s:24,o:0.52},{x:48,y:16,s:16,o:0.45},{x:58,y:20,s:20,o:0.50},
+    {x:68,y:15,s:26,o:0.55},{x:78,y:20,s:14,o:0.42},{x:88,y:16,s:22,o:0.50},{x:97,y:20,s:18,o:0.47},
+    {x:4,y:30,s:22,o:0.50},{x:14,y:35,s:14,o:0.42},{x:24,y:28,s:30,o:0.58},
+    {x:34,y:35,s:16,o:0.45},{x:44,y:30,s:20,o:0.48},{x:55,y:35,s:14,o:0.42},
+    {x:65,y:29,s:24,o:0.52},{x:75,y:35,s:18,o:0.47},{x:85,y:30,s:28,o:0.57},{x:96,y:35,s:14,o:0.42},
+    {x:7,y:43,s:16,o:0.45},{x:17,y:48,s:26,o:0.55},{x:27,y:42,s:12,o:0.40},
+    {x:37,y:47,s:20,o:0.48},{x:47,y:43,s:28,o:0.56},{x:53,y:48,s:22,o:0.50},
+    {x:63,y:43,s:14,o:0.42},{x:73,y:48,s:24,o:0.52},{x:83,y:43,s:18,o:0.47},{x:94,y:48,s:16,o:0.45},
+    {x:5,y:57,s:24,o:0.52},{x:15,y:62,s:16,o:0.45},{x:25,y:56,s:20,o:0.48},
+    {x:35,y:62,s:12,o:0.40},{x:45,y:57,s:26,o:0.54},{x:55,y:62,s:18,o:0.47},
+    {x:65,y:57,s:14,o:0.42},{x:75,y:62,s:28,o:0.57},{x:85,y:57,s:16,o:0.45},{x:95,y:62,s:22,o:0.50},
+    {x:8,y:70,s:20,o:0.48},{x:18,y:75,s:30,o:0.58},{x:28,y:69,s:14,o:0.42},
+    {x:38,y:75,s:18,o:0.47},{x:48,y:70,s:24,o:0.52},{x:58,y:75,s:16,o:0.45},
+    {x:68,y:70,s:26,o:0.54},{x:78,y:75,s:12,o:0.40},{x:88,y:70,s:22,o:0.50},{x:97,y:75,s:18,o:0.47},
+    {x:4,y:83,s:16,o:0.45},{x:14,y:88,s:24,o:0.52},{x:24,y:82,s:18,o:0.47},
+    {x:34,y:88,s:28,o:0.56},{x:44,y:83,s:14,o:0.42},{x:54,y:88,s:20,o:0.48},
+    {x:64,y:83,s:16,o:0.45},{x:74,y:88,s:26,o:0.54},{x:84,y:83,s:14,o:0.42},{x:94,y:88,s:22,o:0.50},
+    {x:7,y:94,s:22,o:0.50},{x:18,y:97,s:14,o:0.42},{x:28,y:94,s:28,o:0.56},
+    {x:40,y:97,s:16,o:0.45},{x:52,y:94,s:20,o:0.48},{x:63,y:97,s:18,o:0.47},
+    {x:74,y:94,s:26,o:0.54},{x:85,y:97,s:14,o:0.42},{x:95,y:94,s:20,o:0.48}
+  ];
+  var c=document.getElementById('loader-crosses');
+  var html='';
+  crosses.forEach(function(p){
+    html+='<svg xmlns="http://www.w3.org/2000/svg" viewBox="211 0 35 32" width="'+p.s+'" height="'+p.s+'" style="left:'+p.x+'%;top:'+p.y+'%;transform:translate(-50%,-50%);opacity:'+p.o+'"><path fill="#9d8552" d="m225.739 14.373-12.149 2 12.149 2Z"/><path fill="#9d8552" d="m234.745 18.377 12.149-2-12.149-2Z"/><path fill="#9d8552" d="M232.245 20.603h-4l2 12.149Z"/><path fill="#9d8552" d="m230.242 0-2 12.149h4Z"/></svg>';
+  });
+  c.innerHTML=html;
+})();
+</script>
 
 <!-- LOGIN -->
 <div id="login-page">
@@ -596,7 +643,7 @@ function closeHotel(){
 
 document.getElementById('login-pass').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
 document.getElementById('login-user').addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('login-pass').focus();});
-window.addEventListener('load',()=>{setTimeout(()=>{const l=document.getElementById('loader');l.classList.add('fade');setTimeout(()=>l.style.display='none',500);},900);});
+window.addEventListener('load',()=>{setTimeout(()=>{const l=document.getElementById('loader');l.classList.add('fade');setTimeout(()=>l.style.display='none',500);},2200);});
 </script>
 
 <!-- HOTEL IFRAME VIEW -->
