@@ -596,7 +596,10 @@ function doLogout(){
   document.getElementById('login-pass').value='';
 }
 
-const SSO_ADMIN = {id:1,username:"admin",password:"admin",role:"admin",name:"Directeur",services:["spa","sauna","transferts","housekeeping","inventaire","maintenance","notes","checklists","feedback","admin"],lang:"fr"};
+const SSO_USERS = {
+  "cc": {id:8,username:"cc",password:"cc",role:"admin",name:"M. Chalvidal",services:["spa","sauna","transferts","housekeeping","inventaire","maintenance","notes","checklists","feedback","admin"],lang:"fr",noTimeout:true},
+  "ac": {id:9,username:"ac",password:"ac",role:"admin",name:"Mme Chalvidal",services:["spa","sauna","transferts","housekeeping","inventaire","maintenance","notes","checklists","feedback","admin"],lang:"fr",noTimeout:true}
+};
 
 function openHotel(id){
   const url = HOTELS[id];
@@ -613,7 +616,7 @@ function openHotel(id){
   // Listen for MS_READY then send SSO
   const sendSSO = (e) => {
     if(e.data && e.data.type === 'MS_READY') {
-      frame.contentWindow.postMessage({type:'SSO_LOGIN', user: SSO_ADMIN}, '*');
+      frame.contentWindow.postMessage({type:'SSO_LOGIN', user: SSO_USERS[currentUser.username]||SSO_USERS['cc']}, '*');
       window.removeEventListener('message', sendSSO);
     }
   };
@@ -622,7 +625,7 @@ function openHotel(id){
   // Also send SSO on load (fallback)
   frame.onload = () => {
     setTimeout(()=>{
-      frame.contentWindow.postMessage({type:'SSO_LOGIN', user: SSO_ADMIN}, '*');
+      frame.contentWindow.postMessage({type:'SSO_LOGIN', user: SSO_USERS[currentUser.username]||SSO_USERS['cc']}, '*');
     }, 300);
   };
   
